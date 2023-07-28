@@ -39,8 +39,7 @@ export class UsersService {
   }
 
   getOneUser(id: string) {
-    const user = this.users.find((user) => user.id === id);
-    return user;
+    return this.users.find((user) => user.id === id);
   }
 
   updateUser(newUserData: UpdateUserDto, id: string) {
