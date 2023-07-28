@@ -2,7 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  NotFoundException,
+  // NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -34,11 +34,11 @@ export class UsersService {
     return userNew;
   }
 
-  detAll() {
+  getAllUser() {
     return this.users;
   }
 
-  getOne(id: string) {
+  getOneUser(id: string) {
     const user = this.users.find((user) => user.id === id);
     return user;
   }
