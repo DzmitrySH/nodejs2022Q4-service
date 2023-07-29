@@ -83,7 +83,7 @@ export class ArtistController {
     description: 'Bad Request, artistId is invalid',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.artistService.remove(id);
   }
 }
