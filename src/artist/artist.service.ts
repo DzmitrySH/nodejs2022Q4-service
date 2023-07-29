@@ -18,15 +18,15 @@ export class ArtistService {
     tracks: [],
   };
 
-  getAll() {
+  async getAll() {
     return this.artists;
   }
 
-  getOne(id: string) {
+  async getOne(id: string) {
     return this.artists.find((artist) => artist.id === id);
   }
 
-  create(createArtistDto: CreateArtistDto) {
+  async create(createArtistDto: CreateArtistDto) {
     const newArtist = {
       id: v4(),
       name: createArtistDto.name,
@@ -36,7 +36,7 @@ export class ArtistService {
     return newArtist;
   }
 
-  update(updateArtistDto: UpdateArtistDto, id: string) {
+  async update(updateArtistDto: UpdateArtistDto, id: string) {
     const artist = this.artists.find((artist) => artist.id === id);
     const updatedArtist = { ...artist, ...updateArtistDto };
     const indexArtist = this.artists.findIndex((artist) => artist.id === id);
@@ -44,7 +44,7 @@ export class ArtistService {
     return updatedArtist;
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     const index = this.artists.findIndex((artist) => artist.id === id);
     this.artists.splice(index, 1);
     this.favorites.artists = this.favorites.artists.filter(
