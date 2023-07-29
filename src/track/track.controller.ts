@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   HttpCode,
-  HttpException,
-  NotFoundException,
   HttpStatus,
   ParseUUIDPipe,
   Param,
