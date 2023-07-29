@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { v4 } from 'uuid';
@@ -14,7 +14,7 @@ export class TrackService {
     tracks: [],
   };
 
-  createTrack(createTrackDto: CreateTrackDto) {
+  async create(createTrackDto: CreateTrackDto) {
     const newTrack = {
       id: v4(),
       name: createTrackDto.name,
@@ -25,25 +25,25 @@ export class TrackService {
     this.tracks.push(newTrack);
     return newTrack;
   }
-  getAllTracks() {
+
+  async getAll() {
     return this.tracks;
   }
-  getTrackOne(id: string) {
+
+  async getOne(id: string) {
     return this.tracks.find((track) => track.id === id);
   }
-  updateTrack(updateTrackDto: UpdateTrackDto, id: string) {
+
+  async update(updateTrackDto: UpdateTrackDto, id: string) {
     const track = this.tracks.find((track) => track.id === id);
-    if (!track)
-      throw new HttpException(
-        `Track ${id} doesn't exist`,
-        HttpStatus.NOT_FOUND,
-      );
+    if (!track) throw new NotFoundException();
     const updatedTrack = { ...track, ...updateTrackDto };
     const index = this.tracks.findIndex((track) => track.id === id);
     this.tracks[index] = updatedTrack;
     return updatedTrack;
   }
-  deleteTrack(id: string) {
+
+  async remove(id: string) {
     const index = this.tracks.findIndex((track) => track.id === id);
     this.tracks.splice(index, 1);
     this.favorites.tracks = this.favorites.tracks.filter(

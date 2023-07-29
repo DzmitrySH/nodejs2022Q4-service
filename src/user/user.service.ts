@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  // NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './interfaces/user.interface';
@@ -13,7 +8,7 @@ import { v4 } from 'uuid';
 export class UsersService {
   public users: User[] = [];
 
-  createUser(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const newUser: User = {
       login: createUserDto.login,
       password: createUserDto.password,
@@ -34,18 +29,18 @@ export class UsersService {
     return userNew;
   }
 
-  getAllUser() {
+  async getAll() {
     return this.users;
   }
 
-  getOneUser(id: string) {
+  async getOne(id: string) {
     return this.users.find((user) => user.id === id);
   }
 
-  updateUser(newUserData: UpdateUserDto, id: string) {
+  async update(newUserData: UpdateUserDto, id: string) {
     const indexUser = this.users.find((user) => user.id === id);
     if (newUserData.oldPassword !== indexUser.password) {
-      throw new HttpException('Password does not match', HttpStatus.FORBIDDEN);
+      throw new NotFoundException();
     }
 
     const updatedUser: User = {
@@ -68,7 +63,7 @@ export class UsersService {
     return userNew;
   }
 
-  deleteUser(id: string) {
+  async remove(id: string) {
     const index = this.users.findIndex((user) => user.id === id);
     this.users.splice(index, 1);
   }
