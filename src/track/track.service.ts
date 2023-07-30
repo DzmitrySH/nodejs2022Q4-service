@@ -7,8 +7,8 @@ import { Favorites } from 'src/favorites/interfaces/favorites.interface';
 
 @Injectable()
 export class TrackService {
-  private readonly tracks: Track[] = [];
-  private readonly favorites: Favorites = {
+  tracks: Track[] = [];
+  favorites: Favorites = {
     artists: [],
     albums: [],
     tracks: [],

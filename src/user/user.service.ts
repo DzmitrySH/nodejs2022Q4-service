@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  public users: User[] = [];
+  users: User[] = [];
 
   async create(createUserDto: CreateUserDto) {
     const newUser: User = {

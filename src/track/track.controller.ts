@@ -30,7 +30,7 @@ export class TrackController {
 
   @Get()
   @ApiOkResponse({
-    description: 'The Tracks returned successfully',
+    description: 'Tracks returned successfully',
   })
   getAll(): Promise<Track[]> {
     return this.trackService.getAll();
@@ -38,7 +38,7 @@ export class TrackController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: 'The Track returned successfully',
+    description: 'Track returned successfully',
   })
   @ApiBadRequestResponse({
     description: 'Bad Request, trackId is invalid',
@@ -62,7 +62,7 @@ export class TrackController {
 
   @Put(':id')
   @ApiOkResponse({
-    description: 'The Track updated successfully',
+    description: 'Track updated successfully',
   })
   @ApiBadRequestResponse({
     description: 'Bad Request, trackId is invalid',
@@ -77,7 +77,7 @@ export class TrackController {
 
   @Delete(':id')
   @ApiNoContentResponse({
-    description: 'The Track deleted successfully',
+    description: 'Track deleted successfully',
   })
   @ApiNotFoundResponse({ description: 'Track not found' })
   @ApiBadRequestResponse({

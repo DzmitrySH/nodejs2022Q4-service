@@ -53,7 +53,7 @@ export class UsersController {
 
   @Post()
   @ApiCreatedResponse({
-    description: 'User created Succesfully',
+    description: 'User created succesfully',
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   async create(@Body() createUserDto: CreateUserDto) {

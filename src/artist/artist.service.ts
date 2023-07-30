@@ -9,10 +9,10 @@ import { Album } from 'src/album/interfaces/album.interface';
 
 @Injectable()
 export class ArtistService {
-  public artists: Artist[] = [];
-  public tracks: Track[] = [];
-  public albums: Album[] = [];
-  public favorites: Favorites = {
+  artists: Artist[] = [];
+  tracks: Track[] = [];
+  albums: Album[] = [];
+  favorites: Favorites = {
     artists: [],
     albums: [],
     tracks: [],

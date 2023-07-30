@@ -8,9 +8,9 @@ import { Favorites } from 'src/favorites/interfaces/favorites.interface';
 
 @Injectable()
 export class AlbumService {
-  public albums: Album[] = [];
-  public tracks: Track[] = [];
-  public favorites: Favorites = {
+  albums: Album[] = [];
+  tracks: Track[] = [];
+  favorites: Favorites = {
     artists: [],
     albums: [],
     tracks: [],
