@@ -31,58 +31,26 @@ export class FavoritesService {
   }
 
   createTrack(id: string, name: string) {
-    // if (!this.favorites[name].includes(id)) {
-    //   this.favorites[name].push(id);
-    //   return true;
-    // } else {
-    //   throw new UnprocessableEntityException('Track not found.');
-    // }
     return this.createEntity(id, name);
   }
 
   removeTrack(id: string, name: string) {
-    // const index = this.favorites[name].findIndex(
-    //   (item: { id: string }) => item.id === id,
-    // );
-    // if (index !== -1) {
-    //   this.favorites[name].splice(index, 1);
-    //   return true;
-    // }
-    // return false;
     return this.removeEntity(id, name);
   }
 
   createAlbum(id: string, name: string) {
-    // this.favorites[name].push(id);
     return this.createEntity(id, name);
   }
 
   removeAlbum(id: string, name: string) {
-    // const index = this.favorites[name].findIndex(
-    //   (item: { id: string }) => item.id === id,
-    // );
-    // if (index !== -1) {
-    //   this.favorites[name].splice(index, 1);
-    //   return true;
-    // }
-    // return false;
     return this.removeEntity(id, name);
   }
 
   createArtist(id: string, name: string) {
-    // this.favorites[name].push(id);
     return this.createEntity(id, name);
   }
 
   removeArtist(id: string, name: string) {
-    // const index = this.favorites[name].findIndex(
-    //   (item: { id: string }) => item.id === id,
-    // );
-    // if (index !== -1) {
-    //   this.favorites[name].splice(index, 1);
-    //   return true;
-    // }
-    // return false;
     return this.removeEntity(id, name);
   }
 
@@ -92,7 +60,9 @@ export class FavoritesService {
     );
     if (index !== -1) {
       this.favorites[name].splice(index, 1);
-      return true;
+      this.favorites[name] = this.favorites[name].filter(
+        (favsId: string) => favsId !== id,
+      );
     }
     return false;
   }
@@ -100,7 +70,7 @@ export class FavoritesService {
   private createEntity(id: string, name: string) {
     if (!this.favorites[name].includes(id)) {
       this.favorites[name].push(id);
-      return true;
+      return id;
     } else {
       throw new UnprocessableEntityException('Not found.');
     }

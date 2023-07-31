@@ -8,24 +8,18 @@ const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
     .setTitle('Home Library Service')
     .setDescription('Home music library service')
     .setVersion('1.0.0')
-    // .addTag('user')
-    // .addTag('track')
-    // .addTag('album')
-    // .addTag('artist')
-    // .addTag('favs')
     .addServer(`http://localhost:${PORT}`)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-
-  app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
   SwaggerModule.setup('doc', app, document);
+  // app.enableCors();
 
   await app.listen(PORT);
 }

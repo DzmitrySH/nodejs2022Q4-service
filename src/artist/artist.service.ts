@@ -55,15 +55,18 @@ export class ArtistService {
 
   async remove(id: string) {
     const index = this.artists.findIndex((artist) => artist.id === id);
+    const indexArtist = this.artists.find((artist) => artist.id === id);
+    if (index === -1) throw new NotFoundException();
     this.artists.splice(index, 1);
-    this.favorites.artists = this.favorites.artists.filter(
-      (artistId) => artistId !== id,
-    );
     this.tracks.forEach((track) => {
       if (track.artistId === id) track.artistId = null;
     });
     this.albums.forEach((album) => {
       if (album.artistId === id) album.artistId = null;
     });
+    this.favorites.artists = this.favorites.artists.filter(
+      (artistId) => artistId !== id,
+    );
+    this.artists = this.artists.filter((a) => a.id !== indexArtist.id);
   }
 }

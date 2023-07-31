@@ -49,12 +49,10 @@ export class TrackService {
 
   async remove(id: string) {
     const index = this.tracks.findIndex((track) => track.id === id);
-    // const index = this.tracks.find((track) => track.id === id);
-    // if (index === -1) throw new NotFoundException();
+    if (index === -1) throw new NotFoundException();
     this.tracks.splice(index, 1);
     this.favorites.tracks = this.favorites.tracks.filter(
       (trackId) => trackId !== id,
     );
-    return true;
   }
 }

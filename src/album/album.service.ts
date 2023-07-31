@@ -50,13 +50,15 @@ export class AlbumService {
 
   async remove(id: string) {
     const index = this.albums.findIndex((album) => album.id === id);
+    const album = this.albums.find((album) => album.id === id);
+    if (index === -1) throw new NotFoundException();
     this.albums.splice(index, 1);
+    this.tracks.forEach((track) => {
+      if (track.albumId === album.id) track.albumId = null;
+    });
     this.favorites.albums = this.favorites.albums.filter(
       (albumId) => albumId !== id,
     );
-    this.tracks.forEach((track) => {
-      if (track.albumId === id) track.albumId = null;
-    });
-    return true;
+    this.albums = this.albums.filter((album) => album.id !== id);
   }
 }
