@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { v4 } from 'uuid';
 import { UpdateAlbumDto } from './dto/update-album.dto';
@@ -21,7 +21,9 @@ export class AlbumService {
   }
 
   async getOne(id: string) {
-    return this.albums.find((album) => album.id === id);
+    const albumOne = this.albums.find((album) => album.id === id);
+    if (!albumOne) throw new NotFoundException();
+    return albumOne;
   }
 
   async create(createAlbumDto: CreateAlbumDto) {
@@ -37,10 +39,13 @@ export class AlbumService {
 
   async update(updateAlbumDto: UpdateAlbumDto, id: string) {
     const album = this.albums.find((album) => album.id === id);
-    const updatedAlbum = { ...album, ...updateAlbumDto };
+    if (!album) throw new NotFoundException();
     const indexAlbum = this.albums.findIndex((album) => album.id === id);
-    this.albums[indexAlbum] = updatedAlbum;
-    return updatedAlbum;
+    if (indexAlbum >= 0) {
+      const updatedAlbum = { ...album, ...updateAlbumDto };
+      this.albums[indexAlbum] = updatedAlbum;
+      return updatedAlbum;
+    } else return null;
   }
 
   async remove(id: string) {
@@ -52,5 +57,6 @@ export class AlbumService {
     this.tracks.forEach((track) => {
       if (track.albumId === id) track.albumId = null;
     });
+    return true;
   }
 }

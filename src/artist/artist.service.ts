@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { v4 } from 'uuid';
@@ -23,25 +23,34 @@ export class ArtistService {
   }
 
   async getOne(id: string) {
-    return this.artists.find((artist) => artist.id === id);
+    const indexArtist = this.artists.find((artist) => artist.id === id);
+    if (!indexArtist) {
+      throw new NotFoundException();
+    }
+    return indexArtist;
   }
 
   async create(createArtistDto: CreateArtistDto) {
-    const newArtist = {
-      id: v4(),
-      name: createArtistDto.name,
-      grammy: createArtistDto.grammy,
-    };
-    this.artists.push(newArtist);
-    return newArtist;
+    if (createArtistDto.name && createArtistDto.grammy) {
+      const newArtist = {
+        id: v4(),
+        name: createArtistDto.name,
+        grammy: createArtistDto.grammy,
+      };
+      this.artists.push(newArtist);
+      return newArtist;
+    } else return null;
   }
 
   async update(updateArtistDto: UpdateArtistDto, id: string) {
     const artist = this.artists.find((artist) => artist.id === id);
-    const updatedArtist = { ...artist, ...updateArtistDto };
+    if (!artist) throw new NotFoundException();
     const indexArtist = this.artists.findIndex((artist) => artist.id === id);
-    this.artists[indexArtist] = updatedArtist;
-    return updatedArtist;
+    if (indexArtist >= 0) {
+      const updatedArtist = { ...artist, ...updateArtistDto };
+      this.artists[indexArtist] = updatedArtist;
+      return updatedArtist;
+    } else return null;
   }
 
   async remove(id: string) {

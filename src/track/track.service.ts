@@ -31,23 +31,30 @@ export class TrackService {
   }
 
   async getOne(id: string) {
-    return this.tracks.find((track) => track.id === id);
+    const oneTrack = this.tracks.find((track) => track.id === id);
+    if (!oneTrack) throw new NotFoundException();
+    return oneTrack;
   }
 
   async update(updateTrackDto: UpdateTrackDto, id: string) {
     const track = this.tracks.find((track) => track.id === id);
     if (!track) throw new NotFoundException();
-    const updatedTrack = { ...track, ...updateTrackDto };
-    const index = this.tracks.findIndex((track) => track.id === id);
-    this.tracks[index] = updatedTrack;
-    return updatedTrack;
+    const indexTrack = this.tracks.findIndex((track) => track.id === id);
+    if (indexTrack >= 0) {
+      const updatedTrack = { ...track, ...updateTrackDto };
+      this.tracks[indexTrack] = updatedTrack;
+      return updatedTrack;
+    } else return null;
   }
 
   async remove(id: string) {
     const index = this.tracks.findIndex((track) => track.id === id);
+    // const index = this.tracks.find((track) => track.id === id);
+    // if (index === -1) throw new NotFoundException();
     this.tracks.splice(index, 1);
     this.favorites.tracks = this.favorites.tracks.filter(
       (trackId) => trackId !== id,
     );
+    return true;
   }
 }

@@ -13,6 +13,7 @@ import {
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
+import { Artist } from './interfaces/artist.interface';
 import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
@@ -31,8 +32,8 @@ export class ArtistController {
   @ApiOkResponse({
     description: 'Artists returned successfully',
   })
-  async getAll() {
-    return this.artistService.getAll();
+  async getAll(): Promise<Artist[]> {
+    return await this.artistService.getAll();
   }
 
   @Get(':id')
@@ -46,8 +47,8 @@ export class ArtistController {
     description: 'Artist not found',
     status: HttpStatus.NOT_FOUND,
   })
-  async getOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.artistService.getOne(id);
+  async getOne(@Param('id', ParseUUIDPipe) id: string): Promise<Artist> {
+    return await this.artistService.getOne(id);
   }
 
   @Post()

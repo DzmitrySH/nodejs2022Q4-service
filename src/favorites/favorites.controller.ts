@@ -19,7 +19,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
-@ApiTags('Favs')
+@ApiTags('Favorites')
 @Controller('favs')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
@@ -28,8 +28,8 @@ export class FavoritesController {
   @ApiOkResponse({
     description: 'Favorites returned successfully',
   })
-  async getAll() {
-    return await this.favoritesService.getAll();
+  getAll() {
+    return this.favoritesService.getAll();
   }
 
   @Post('/track/:id')
@@ -42,8 +42,8 @@ export class FavoritesController {
   @ApiUnprocessableEntityResponse({
     description: "Track with id doesn't exist",
   })
-  async createTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.createTrack(id, 'tracks');
+  createTrack(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.createTrack(id, 'tracks');
   }
 
   @Delete('/track/:id')
@@ -55,8 +55,8 @@ export class FavoritesController {
     description: 'Bad Request, invalid track id',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async removeTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.removeTrack(id, 'tracks');
+  removeTrack(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.removeTrack(id, 'tracks');
   }
 
   @Post('/album/:id')
@@ -69,8 +69,8 @@ export class FavoritesController {
   @ApiUnprocessableEntityResponse({
     description: "Album with id doesn't exist",
   })
-  async createAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.createAlbum(id, 'albums');
+  createAlbum(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.createAlbum(id, 'albums');
   }
 
   @Delete('/album/:id')
@@ -82,8 +82,8 @@ export class FavoritesController {
     description: 'Bad Request, invalid album id',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async removeAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.removeAlbum(id, 'albums');
+  removeAlbum(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.removeAlbum(id, 'albums');
   }
 
   @Post('/artist/:id')
@@ -96,8 +96,8 @@ export class FavoritesController {
   @ApiUnprocessableEntityResponse({
     description: "Artist with id doesn't exist",
   })
-  async createArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.createArtist(id, 'artists');
+  createArtist(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.createArtist(id, 'artists');
   }
 
   @Delete('/artist/:id')
@@ -109,7 +109,7 @@ export class FavoritesController {
     description: 'Bad Request, invalid artist id',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async removeArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.favoritesService.removeArtist(id, 'artists');
+  removeArtist(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.removeArtist(id, 'artists');
   }
 }

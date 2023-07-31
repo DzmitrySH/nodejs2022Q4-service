@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Favorites } from './interfaces/favorites.interface';
 import { Album } from 'src/album/interfaces/album.interface';
 import { Track } from 'src/track/interfaces/track.interface';
@@ -15,7 +15,7 @@ export class FavoritesService {
     tracks: [],
   };
 
-  async getAll() {
+  getAll() {
     const favs = {
       artists: this.artists.filter((artist) =>
         this.favorites.artists.includes(artist.id),
@@ -30,36 +30,79 @@ export class FavoritesService {
     return favs;
   }
 
-  async createTrack(id: string, name: string) {
-    this.favorites[name].push(id);
+  createTrack(id: string, name: string) {
+    // if (!this.favorites[name].includes(id)) {
+    //   this.favorites[name].push(id);
+    //   return true;
+    // } else {
+    //   throw new UnprocessableEntityException('Track not found.');
+    // }
+    return this.createEntity(id, name);
   }
 
-  async removeTrack(id: string, name: string) {
+  removeTrack(id: string, name: string) {
+    // const index = this.favorites[name].findIndex(
+    //   (item: { id: string }) => item.id === id,
+    // );
+    // if (index !== -1) {
+    //   this.favorites[name].splice(index, 1);
+    //   return true;
+    // }
+    // return false;
+    return this.removeEntity(id, name);
+  }
+
+  createAlbum(id: string, name: string) {
+    // this.favorites[name].push(id);
+    return this.createEntity(id, name);
+  }
+
+  removeAlbum(id: string, name: string) {
+    // const index = this.favorites[name].findIndex(
+    //   (item: { id: string }) => item.id === id,
+    // );
+    // if (index !== -1) {
+    //   this.favorites[name].splice(index, 1);
+    //   return true;
+    // }
+    // return false;
+    return this.removeEntity(id, name);
+  }
+
+  createArtist(id: string, name: string) {
+    // this.favorites[name].push(id);
+    return this.createEntity(id, name);
+  }
+
+  removeArtist(id: string, name: string) {
+    // const index = this.favorites[name].findIndex(
+    //   (item: { id: string }) => item.id === id,
+    // );
+    // if (index !== -1) {
+    //   this.favorites[name].splice(index, 1);
+    //   return true;
+    // }
+    // return false;
+    return this.removeEntity(id, name);
+  }
+
+  private removeEntity(id: string, name: string) {
     const index = this.favorites[name].findIndex(
       (item: { id: string }) => item.id === id,
     );
-    this.favorites[name].splice(index, 1);
+    if (index !== -1) {
+      this.favorites[name].splice(index, 1);
+      return true;
+    }
+    return false;
   }
 
-  async createAlbum(id: string, name: string) {
-    this.favorites[name].push(id);
-  }
-
-  async removeAlbum(id: string, name: string) {
-    const index = this.favorites[name].findIndex(
-      (item: { id: string }) => item.id === id,
-    );
-    this.favorites[name].splice(index, 1);
-  }
-
-  async createArtist(id: string, name: string) {
-    this.favorites[name].push(id);
-  }
-
-  async removeArtist(id: string, name: string) {
-    const index = this.favorites[name].findIndex(
-      (item: { id: string }) => item.id === id,
-    );
-    this.favorites[name].splice(index, 1);
+  private createEntity(id: string, name: string) {
+    if (!this.favorites[name].includes(id)) {
+      this.favorites[name].push(id);
+      return true;
+    } else {
+      throw new UnprocessableEntityException('Not found.');
+    }
   }
 }
