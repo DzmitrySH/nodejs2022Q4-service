@@ -1,78 +1,72 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Favorites } from './interfaces/favorites.interface';
-import { Album } from 'src/album/interfaces/album.interface';
-import { Track } from 'src/track/interfaces/track.interface';
-import { Artist } from 'src/artist/interfaces/artist.interface';
+import {
+  // HttpException,
+  // HttpStatus,
+  Injectable,
+  // NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { Db } from 'src/db/db';
+import { Artist } from '../artist/interfaces/artist.interface';
+import { Track } from '../track/interfaces/track.interface';
+import { Album } from '../album/interfaces/album.interface';
+
+type Entity = Artist | Track | Album;
 
 @Injectable()
 export class FavoritesService {
-  albums: Album[] = [];
-  tracks: Track[] = [];
-  artists: Artist[] = [];
-  favorites: Favorites = {
-    artists: [],
-    albums: [],
-    tracks: [],
-  };
-
   getAll() {
     const favs = {
-      artists: this.artists.filter((artist) =>
-        this.favorites.artists.includes(artist.id),
+      artists: Db.artists.filter((artist) =>
+        Db.favorites.artists.includes(artist.id),
       ),
-      albums: this.albums.filter((album) =>
-        this.favorites.albums.includes(album.id),
+      albums: Db.albums.filter((album) =>
+        Db.favorites.albums.includes(album.id),
       ),
-      tracks: this.tracks.filter((track) =>
-        this.favorites.tracks.includes(track.id),
+      tracks: Db.tracks.filter((track) =>
+        Db.favorites.tracks.includes(track.id),
       ),
     };
     return favs;
   }
 
-  createTrack(id: string, name: string) {
-    return this.createEntity(id, name);
+  createTrack(id: string) {
+    return this.createEntity(id, 'tracks');
   }
 
-  removeTrack(id: string, name: string) {
-    return this.removeEntity(id, name);
+  removeTrack(id: string) {
+    return this.removeEntity(id, 'tracks');
   }
 
-  createAlbum(id: string, name: string) {
-    return this.createEntity(id, name);
+  createAlbum(id: string) {
+    return this.createEntity(id, 'albums');
   }
 
-  removeAlbum(id: string, name: string) {
-    return this.removeEntity(id, name);
+  removeAlbum(id: string) {
+    return this.removeEntity(id, 'albums');
   }
 
-  createArtist(id: string, name: string) {
-    return this.createEntity(id, name);
+  createArtist(id: string) {
+    return this.createEntity(id, 'artists');
   }
 
-  removeArtist(id: string, name: string) {
-    return this.removeEntity(id, name);
+  removeArtist(id: string) {
+    return this.removeEntity(id, 'artists');
   }
 
   private removeEntity(id: string, name: string) {
-    const index = this.favorites[name].findIndex(
-      (item: { id: string }) => item.id === id,
-    );
+    const include: boolean = Db.favorites[name].includes(id);
+    if (!include) throw new UnprocessableEntityException();
+    const index = Db.favorites[name].indexOf(id);
     if (index !== -1) {
-      this.favorites[name].splice(index, 1);
-      this.favorites[name] = this.favorites[name].filter(
-        (favsId: string) => favsId !== id,
-      );
+      Db.favorites[name].splice(index, 1);
     }
-    return false;
   }
 
   private createEntity(id: string, name: string) {
-    if (!this.favorites[name].includes(id)) {
-      this.favorites[name].push(id);
-      return id;
-    } else {
-      throw new UnprocessableEntityException('Not found.');
+    const index = Db[name].findIndex((ent: Entity) => ent.id === id);
+    if (index === -1) throw new UnprocessableEntityException();
+    if (!Db.favorites[name].includes(id)) {
+      Db.favorites[name].push(id);
     }
   }
 }

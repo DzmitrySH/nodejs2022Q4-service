@@ -6,12 +6,11 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './interfaces/user.interface';
+import { Db } from 'src/db/db';
 import { v4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  users: User[] = [];
-
   async create(createUserDto: CreateUserDto) {
     const newUser: User = {
       login: createUserDto.login,
@@ -22,7 +21,7 @@ export class UsersService {
       updatedAt: new Date().getTime(),
     };
 
-    this.users.push(newUser);
+    Db.users.push(newUser);
     const userNew = {
       id: newUser.id,
       login: newUser.login,
@@ -34,17 +33,17 @@ export class UsersService {
   }
 
   async getAll() {
-    return this.users;
+    return Db.users;
   }
 
   async getOne(id: string) {
-    const oneUser = this.users.find((user) => user.id === id);
+    const oneUser = Db.users.find((user) => user.id === id);
     if (!oneUser) throw new NotFoundException();
     return oneUser;
   }
 
   async update(newUserData: UpdateUserDto, id: string) {
-    const indexUser = this.users.find((user) => user.id === id);
+    const indexUser = Db.users.find((user) => user.id === id);
     if (!indexUser) throw new NotFoundException();
     if (newUserData.oldPassword !== indexUser.password) {
       throw new ForbiddenException();
@@ -57,8 +56,8 @@ export class UsersService {
       updatedAt: Date.now(),
     };
 
-    const index = this.users.findIndex((user) => user.id === id);
-    this.users[index] = updatedUser;
+    const index = Db.users.findIndex((user) => user.id === id);
+    Db.users[index] = updatedUser;
 
     const userNew = {
       id: updatedUser.id,
@@ -71,8 +70,8 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    const indexUser = this.users.findIndex((user) => user.id === id);
-    if (indexUser === -1) throw new NotFoundException();
-    this.users.splice(indexUser, 1);
+    const indexUser = Db.users.find((user) => user.id === id);
+    if (!indexUser) throw new NotFoundException();
+    Db.users = Db.users.filter((el) => el.id !== indexUser.id);
   }
 }

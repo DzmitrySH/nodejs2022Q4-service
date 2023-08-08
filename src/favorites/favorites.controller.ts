@@ -43,7 +43,7 @@ export class FavoritesController {
     description: "Track with id doesn't exist",
   })
   createTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.createTrack(id, 'tracks');
+    return this.favoritesService.createTrack(id);
   }
 
   @Delete('/track/:id')
@@ -56,7 +56,7 @@ export class FavoritesController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   removeTrack(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.removeTrack(id, 'tracks');
+    return this.favoritesService.removeTrack(id);
   }
 
   @Post('/album/:id')
@@ -70,7 +70,7 @@ export class FavoritesController {
     description: "Album with id doesn't exist",
   })
   createAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.createAlbum(id, 'albums');
+    return this.favoritesService.createAlbum(id);
   }
 
   @Delete('/album/:id')
@@ -83,10 +83,10 @@ export class FavoritesController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   removeAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.removeAlbum(id, 'albums');
+    return this.favoritesService.removeAlbum(id);
   }
 
-  @Post('/artist/:id')
+  @Post('artist/:id')
   @ApiCreatedResponse({
     description: 'Artist id add to the favorites',
   })
@@ -97,10 +97,10 @@ export class FavoritesController {
     description: "Artist with id doesn't exist",
   })
   createArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.createArtist(id, 'artists');
+    return this.favoritesService.createArtist(id);
   }
 
-  @Delete('/artist/:id')
+  @Delete('artist/:id')
   @ApiNoContentResponse({
     description: 'Artist delete successfully',
   })
@@ -110,6 +110,6 @@ export class FavoritesController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   removeArtist(@Param('id', ParseUUIDPipe) id: string) {
-    return this.favoritesService.removeArtist(id, 'artists');
+    return this.favoritesService.removeArtist(id);
   }
 }
