@@ -21,10 +21,5 @@ export interface base {
   artists: Artist[];
   tracks: Track[];
   albums: Album[];
-  // favorites: {
-  //   artists: string[];
-  //   albums: string[];
-  //   tracks: string[];
-  // };
   favorites: Favorites;
 }
